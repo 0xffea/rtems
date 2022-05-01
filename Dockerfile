@@ -10,4 +10,4 @@ WORKDIR /usr/local/src
 COPY . .
 
 WORKDIR  /usr/local/src/rtems-source-builder/rtems
-# RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/i386 6/rtems-i386
+RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/i386 6/rtems-i386
