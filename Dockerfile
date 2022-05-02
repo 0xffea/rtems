@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:22.04 AS builder
 
 RUN apt update \
   && apt install -y build-essential python-is-python3 g++ gdb unzip \
@@ -25,3 +25,8 @@ RUN echo "[lm32/milkymist]\nRTEMS_POSIX_API=true" > config.ini
 RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
   && ./waf configure --prefix=/usr/local/rtems/lm32 \
   && ./waf install
+
+FROM ubuntu:22.04
+
+COPY --from=builder /usr/local/rtems/i386 /usr/local/rtems/i386
+COPY --from=builder /usr/local/rtems/lm32 /usr/local/rtems/lm32
