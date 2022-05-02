@@ -11,3 +11,10 @@ COPY . .
 
 WORKDIR  /usr/local/src/rtems-source-builder/rtems
 RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/i386 6/rtems-i386
+
+WORKDIR /usr/local/src/rtems
+
+RUN echo "[i386/pc386]\nRTEMS_POSIX_API=true" > config.ini
+RUN PATH=/usr/local/rtems/i386/bin:$PATH \
+  && ./waf configure \
+  && ./waf install
