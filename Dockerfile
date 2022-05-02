@@ -28,5 +28,8 @@ RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
 
 FROM ubuntu:22.04
 
+RUN apt update \
+  && apt install -y python-is-python3
+
 COPY --from=builder /usr/local/rtems/i386 /usr/local/rtems/i386
 COPY --from=builder /usr/local/rtems/lm32 /usr/local/rtems/lm32
