@@ -16,5 +16,5 @@ WORKDIR /usr/local/src/rtems
 
 RUN echo "[i386/pc386]\nRTEMS_POSIX_API=true" > config.ini
 RUN PATH=/usr/local/rtems/i386/bin:$PATH \
-  && ./waf configure \
+  && ./waf configure --prefix=/usr/local/rtems/i386 \
   && ./waf install
