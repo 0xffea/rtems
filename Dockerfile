@@ -26,6 +26,11 @@ RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
   && ./waf configure --prefix=/usr/local/rtems/lm32 \
   && ./waf install
 
+WORKDIR /usr/local/src/rtems-libbsd
+RUN PATH=/usr/local/rtems/i386/bin:$PATH \
+  && ./waf configure --prefix=/usr/local/rtems/i386 --rtems-tools=/usr/local/rtems/i386 --rtems-bsps=i386/pc386 --rtems-version=6 \
+  && ./waf install
+
 FROM ubuntu:22.04
 
 RUN apt update \
