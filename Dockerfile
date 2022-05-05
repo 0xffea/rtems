@@ -31,6 +31,10 @@ RUN PATH=/usr/local/rtems/i386/bin:$PATH \
   && ./waf configure --prefix=/usr/local/rtems/i386 --rtems-tools=/usr/local/rtems/i386 --rtems-bsps=i386/pc386 --rtems-version=6 \
   && ./waf install
 
+RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
+  && ./waf configure --prefix=/usr/local/rtems/lm32 --rtems-tools=/usr/local/rtems/lm32 --rtems-bsps=lm32/milkymist --rtems-version=6 \
+  && ./waf install
+
 FROM ubuntu:22.04
 
 RUN apt update \
