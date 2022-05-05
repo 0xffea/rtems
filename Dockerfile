@@ -3,7 +3,7 @@ FROM ubuntu:22.04 AS builder
 RUN apt update \
   && apt install -y build-essential python-is-python3 g++ gdb unzip \
                     pax bison flex texinfo python3-dev libpython2-dev libncurses5-dev \
-                    zlib1g-dev git
+                    zlib1g-dev git cmake
 
 WORKDIR /usr/local/src
 
@@ -31,9 +31,19 @@ RUN PATH=/usr/local/rtems/i386/bin:$PATH \
   && ./waf configure --prefix=/usr/local/rtems/i386 --rtems-tools=/usr/local/rtems/i386 --rtems-bsps=i386/pc386 --rtems-version=6 \
   && ./waf install
 
-RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
-  && ./waf configure --prefix=/usr/local/rtems/lm32 --rtems-tools=/usr/local/rtems/lm32 --rtems-bsps=lm32/milkymist --rtems-version=6 \
-  && ./waf install
+#
+# internal gcc compiler error
+#
+#RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
+#  && ./waf configure --prefix=/usr/local/rtems/lm32 --rtems-tools=/usr/local/rtems/lm32 --rtems-bsps=lm32/milkymist --rtems-version=6 \
+#  && ./waf install
+
+WORKDIR /usr/local/src/SOEM
+RUN PATH=/usr/local/rtems/i386/bin:$PATH \
+  && mkdir build \
+  && cd build \
+  && cmake ../ \
+  && make
 
 FROM ubuntu:22.04
 
