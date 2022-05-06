@@ -2,8 +2,9 @@
 Builds an image with the RTEMS cross compiler toolchain
 for i386 and lm32.  Also included is
 
-* RTEMS kernel
+* rtems
 * rtems-libbsd
+* soem
 
 The image can be pulled from the Github registry
 and is public.
