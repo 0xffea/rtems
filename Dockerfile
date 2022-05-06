@@ -42,7 +42,7 @@ WORKDIR /usr/local/src/SOEM
 RUN PATH=/usr/local/rtems/i386/bin:$PATH \
   && mkdir build \
   && cd build \
-  && cmake ../ \
+  && cmake -DCMAKE_SYSTEM_NAME=rtems -DRTEMS_TOOLS_PATH=/usr/local/rtems/i386 -DHOST=i386-rtems6 .. \
   && make
 
 FROM ubuntu:22.04
