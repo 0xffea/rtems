@@ -42,8 +42,10 @@ WORKDIR /usr/local/src/SOEM
 RUN PATH=/usr/local/rtems/i386/bin:$PATH \
   && mkdir build \
   && cd build \
-  && cmake -DCMAKE_SYSTEM_NAME=rtems -DRTEMS_TOOLS_PATH=/usr/local/rtems/i386 -DHOST=i386-rtems6 .. \
-  && make
+  && cmake -DCMAKE_SYSTEM_NAME=rtems -DRTEMS_TOOLS_PATH=/usr/local/rtems/i386 \
+           -DHOST=i386-rtems6 -DCMAKE_INSTALL_PREFIX=/usr/local/rtems/i386 \
+           -DCMAKE_C_COMPILER=/usr/local/rtems/i386/bin/i386-rtems6-gcc \
+  && make VERBOSE=1 install
 
 FROM ubuntu:22.04
 
