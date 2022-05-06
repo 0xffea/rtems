@@ -9,4 +9,5 @@
 	url = git://git.rtems.org/rtems-libbsd.git
 [submodule "SOEM"]
 	path = SOEM
-	url = https://github.com/OpenEtherCATsociety/SOEM.git
+	url = https://github.com/0xffea/SOEM.git
+        branch = rtems-cmake
