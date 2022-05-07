@@ -15,20 +15,20 @@ RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/i386 6/rtems-i386
 
 WORKDIR /usr/local/src/rtems
 
-RUN echo "[i386/pc386]\nRTEMS_POSIX_API=true" > config.ini
+RUN echo "[i386/pc386]\nRTEMS_POSIX_API=True\nBUILD_TESTS=True\nRTEMS_DEBUG=True" > config.ini
 RUN PATH=/usr/local/rtems/i386/bin:$PATH \
-  && ./waf configure --prefix=/usr/local/rtems/i386 \
+  ./waf configure --prefix=/usr/local/rtems/i386 \
   && ./waf install \
   && cp /usr/local/src/rtems/waf /usr/local/bin
 
 RUN echo "[lm32/milkymist]\nRTEMS_POSIX_API=true" > config.ini
 RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
-  && ./waf configure --prefix=/usr/local/rtems/lm32 \
+  ./waf configure --prefix=/usr/local/rtems/lm32 \
   && ./waf install
 
 WORKDIR /usr/local/src/rtems-libbsd
 RUN PATH=/usr/local/rtems/i386/bin:$PATH \
-  && ./waf configure --prefix=/usr/local/rtems/i386 --rtems-tools=/usr/local/rtems/i386 --rtems-bsps=i386/pc386 --rtems-version=6 \
+  ./waf configure --prefix=/usr/local/rtems/i386 --rtems-tools=/usr/local/rtems/i386 --rtems-bsps=i386/pc386 --rtems-version=6 \
   && ./waf install
 
 #
