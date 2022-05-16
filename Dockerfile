@@ -11,13 +11,15 @@ COPY . .
 
 WORKDIR  /usr/local/src/rtems-source-builder/rtems
 RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/i386 6/rtems-i386 \
-  && ../source-builder/sb-set-builder --prefix=/usr/local/rtems/lm32 6/rtems-lm32
+  && ../source-builder/sb-set-builder --prefix=/usr/local/rtems/lm32 6/rtems-lm32 \
+  && ../source-builder/sb-set-builder --prefix=/usr/local/rtems/microblaze 6/rtems-microblaze
 
 WORKDIR /usr/local/src/rtems
 
 RUN echo "[i386/pc386]\nRTEMS_POSIX_API=True\nBUILD_TESTS=True\nRTEMS_DEBUG=True" > config.ini
 RUN PATH=/usr/local/rtems/i386/bin:$PATH \
   ./waf configure --prefix=/usr/local/rtems/i386 \
+  && ./waf bsp_defaults --rtems-bsps=i386/pc386 \
   && ./waf install \
   && cp /usr/local/src/rtems/waf /usr/local/bin
 
