@@ -19,10 +19,10 @@ RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/i386 6/rtems-i386
 
 WORKDIR /usr/local/src/rtems
 
-RUN echo "[i386/pc386]\nRTEMS_POSIX_API=True\nBUILD_TESTS=True\nRTEMS_DEBUG=True" > config.ini
+RUN echo "[i386/pc686]\nRTEMS_POSIX_API=True\nBUILD_TESTS=True\nRTEMS_DEBUG=True" > config.ini
 RUN PATH=/usr/local/rtems/i386/bin:$PATH \
   ./waf configure --prefix=/usr/local/rtems/i386 \
-  && ./waf bsp_defaults --rtems-bsps=i386/pc386 \
+  && ./waf bsp_defaults --rtems-bsps=i386/pc686 \
   && ./waf install \
   && cp /usr/local/src/rtems/waf /usr/local/bin
 
@@ -31,7 +31,7 @@ RUN PATH=/usr/local/rtems/i386/bin:$PATH \
 #  ./waf configure --prefix=/usr/local/rtems/lm32 \
 #  && ./waf install
 
-RUN echo "[riscv/riscv]\nRTEMS_POSIX_API=True\nBUILD_TESTS=True\nRTEMS_DEBUG=True" > config.ini
+RUN echo "[riscv/rv32imafc]\nRTEMS_POSIX_API=True\nBUILD_TESTS=True\nRTEMS_DEBUG=True" > config.ini
 RUN PATH=/usr/local/rtems/riscv/bin:$PATH \
   ./waf configure --prefix=/usr/local/rtems/riscv \
   && ./waf install
