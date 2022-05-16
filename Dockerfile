@@ -14,8 +14,8 @@ COPY . .
 #
 WORKDIR  /usr/local/src/rtems-source-builder/rtems
 RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/i386 6/rtems-i386 \
-  && ../source-builder/sb-set-builder --prefix=/usr/local/rtems/lm32 6/rtems-lm32 \
-  && ../source-builder/sb-set-builder --prefix=/usr/local/rtems/microblaze 6/rtems-riscv
+#  && ../source-builder/sb-set-builder --prefix=/usr/local/rtems/lm32 6/rtems-lm32 \
+  && ../source-builder/sb-set-builder --prefix=/usr/local/rtems/riscv 6/rtems-riscv
 
 WORKDIR /usr/local/src/rtems
 
@@ -26,9 +26,14 @@ RUN PATH=/usr/local/rtems/i386/bin:$PATH \
   && ./waf install \
   && cp /usr/local/src/rtems/waf /usr/local/bin
 
-RUN echo "[lm32/milkymist]\nRTEMS_POSIX_API=true" > config.ini
-RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
-  ./waf configure --prefix=/usr/local/rtems/lm32 \
+#RUN echo "[lm32/milkymist]\nRTEMS_POSIX_API=true" > config.ini
+#RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
+#  ./waf configure --prefix=/usr/local/rtems/lm32 \
+#  && ./waf install
+
+RUN echo "[riscv/riscv]\nRTEMS_POSIX_API=True\nBUILD_TESTS=True\nRTEMS_DEBUG=True" > config.ini
+RUN PATH=/usr/local/rtems/riscv/bin:$PATH \
+  ./waf configure --prefix=/usr/local/rtems/riscv \
   && ./waf install
 
 WORKDIR /usr/local/src/rtems-libbsd
