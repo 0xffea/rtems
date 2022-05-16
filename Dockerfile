@@ -9,10 +9,13 @@ WORKDIR /usr/local/src
 
 COPY . .
 
+#
+# gdb fails to build for microblaze
+#
 WORKDIR  /usr/local/src/rtems-source-builder/rtems
 RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/i386 6/rtems-i386 \
   && ../source-builder/sb-set-builder --prefix=/usr/local/rtems/lm32 6/rtems-lm32 \
-  && ../source-builder/sb-set-builder --prefix=/usr/local/rtems/microblaze 6/rtems-microblaze
+  && ../source-builder/sb-set-builder --prefix=/usr/local/rtems/microblaze 6/rtems-riscv
 
 WORKDIR /usr/local/src/rtems
 
