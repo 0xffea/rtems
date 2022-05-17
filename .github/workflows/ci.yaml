@@ -46,7 +46,7 @@ jobs:
       -
         name: Inspect
         run: |
-          docker buildx imagetools inspect ${{ env.IMAGE_NAME }}
+          docker buildx imagetools inspect ${{ env.IMAGE_NAME_I386 }}
   rtems-riscv:
     runs-on: ubuntu-latest
     permissions:
