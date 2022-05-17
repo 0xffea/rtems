@@ -24,13 +24,13 @@ RUN PATH=/usr/local/rtems/riscv/bin:$PATH \
   && ./waf install
 
 WORKDIR /usr/local/src/SOEM
-RUN PATH=/usr/local/rtems/riscv/bin:$PATH \
-  && mkdir build \
-  && cd build \
-  && cmake -DCMAKE_SYSTEM_NAME=rtems -DRTEMS_TOOLS_PATH=/usr/local/rtems/riscv \
-           -DHOST=riscv-rtems6 -DCMAKE_INSTALL_PREFIX=/usr/local/rtems/riscv \
-           -DCMAKE_C_COMPILER=/usr/local/rtems/riscv/bin/riscv-rtems6-gcc .. \
-  && make VERBOSE=1 install
+#RUN PATH=/usr/local/rtems/riscv/bin:$PATH \
+#  && mkdir build \
+#  && cd build \
+#  && cmake -DCMAKE_SYSTEM_NAME=rtems -DRTEMS_TOOLS_PATH=/usr/local/rtems/riscv \
+#           -DHOST=riscv-rtems6 -DCMAKE_INSTALL_PREFIX=/usr/local/rtems/riscv \
+#           -DCMAKE_C_COMPILER=/usr/local/rtems/riscv/bin/riscv-rtems6-gcc .. \
+#  && make VERBOSE=1 install
 
 FROM ubuntu:22.04
 

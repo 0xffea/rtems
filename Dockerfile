@@ -9,13 +9,8 @@ WORKDIR /usr/local/src
 
 COPY . .
 
-#
-# gdb fails to build for microblaze
-#
 WORKDIR  /usr/local/src/rtems-source-builder/rtems
-RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/i386 6/rtems-i386 \
-#  && ../source-builder/sb-set-builder --prefix=/usr/local/rtems/lm32 6/rtems-lm32 \
-  && ../source-builder/sb-set-builder --prefix=/usr/local/rtems/riscv 6/rtems-riscv
+RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/i386 6/rtems-i386
 
 WORKDIR /usr/local/src/rtems
 
@@ -26,30 +21,9 @@ RUN PATH=/usr/local/rtems/i386/bin:$PATH \
   && ./waf install \
   && cp /usr/local/src/rtems/waf /usr/local/bin
 
-#RUN echo "[lm32/milkymist]\nRTEMS_POSIX_API=true" > config.ini
-#RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
-#  ./waf configure --prefix=/usr/local/rtems/lm32 \
-#  && ./waf install
-
-RUN echo "[riscv/rv32imafc]\nRTEMS_POSIX_API=True\nBUILD_TESTS=True\nRTEMS_DEBUG=True" > config.ini
-RUN PATH=/usr/local/rtems/riscv/bin:$PATH \
-  ./waf configure --prefix=/usr/local/rtems/riscv \
-  && ./waf install
-
 WORKDIR /usr/local/src/rtems-libbsd
 RUN PATH=/usr/local/rtems/i386/bin:$PATH \
   ./waf configure --prefix=/usr/local/rtems/i386 --rtems-tools=/usr/local/rtems/i386 --rtems-bsps=i386/pc686 --rtems-version=6 \
-  && ./waf install
-
-#
-# internal gcc compiler error
-#
-#RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
-#  && ./waf configure --prefix=/usr/local/rtems/lm32 --rtems-tools=/usr/local/rtems/lm32 --rtems-bsps=lm32/milkymist --rtems-version=6 \
-#  && ./waf install
-
-RUN PATH=/usr/local/rtems/riscv/bin:$PATH \
-  ./waf configure --prefix=/usr/local/rtems/riscv --rtems-tools=/usr/local/rtems/riscv --rtems-bsps=riscv/rv32imafc --rtems-version=6 \
   && ./waf install
 
 WORKDIR /usr/local/src/SOEM
@@ -67,4 +41,3 @@ RUN apt update \
   && apt install -y python-is-python3
 
 COPY --from=builder /usr/local/rtems/i386 /usr/local/rtems/i386
-COPY --from=builder /usr/local/rtems/lm32 /usr/local/rtems/lm32
