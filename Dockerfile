@@ -38,7 +38,7 @@ RUN PATH=/usr/local/rtems/riscv/bin:$PATH \
 
 WORKDIR /usr/local/src/rtems-libbsd
 RUN PATH=/usr/local/rtems/i386/bin:$PATH \
-  ./waf configure --prefix=/usr/local/rtems/i386 --rtems-tools=/usr/local/rtems/i386 --rtems-bsps=i386/pc386 --rtems-version=6 \
+  ./waf configure --prefix=/usr/local/rtems/i386 --rtems-tools=/usr/local/rtems/i386 --rtems-bsps=i386/pc686 --rtems-version=6 \
   && ./waf install
 
 #
@@ -47,6 +47,10 @@ RUN PATH=/usr/local/rtems/i386/bin:$PATH \
 #RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
 #  && ./waf configure --prefix=/usr/local/rtems/lm32 --rtems-tools=/usr/local/rtems/lm32 --rtems-bsps=lm32/milkymist --rtems-version=6 \
 #  && ./waf install
+
+RUN PATH=/usr/local/rtems/riscv/bin:$PATH \
+  ./waf configure --prefix=/usr/local/rtems/riscv --rtems-tools=/usr/local/rtems/riscv --rtems-bsps=riscv/rv32imafc --rtems-version=6 \
+  && ./waf install
 
 WORKDIR /usr/local/src/SOEM
 RUN PATH=/usr/local/rtems/i386/bin:$PATH \
