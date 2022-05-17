@@ -8,6 +8,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: "ghcr.io/0xffea/rtems-tools:latest"
+  IMAGE_NAME_RISCV: "ghcr.io/0xffea/rtems-riscv-tools:latest"
 
 jobs:
   docker:
@@ -33,13 +34,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       -
-        name: Build and push
+        name: Build and push RISC-V
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           platforms: linux/amd64
           push: true
-          tags: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.IMAGE_NAME_RISCV }}
+          file: Dockerfile.riscv
       -
         name: Inspect
         run: |
