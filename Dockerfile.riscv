@@ -20,7 +20,7 @@ RUN PATH=/usr/local/rtems/riscv/bin:$PATH \
   && ./waf install
 
 RUN PATH=/usr/local/rtems/riscv/bin:$PATH \
-  ./waf configure --prefix=/usr/local/rtems/riscv --rtems-tools=/usr/local/rtems/riscv --rtems-bsps=riscv/rv32imafc --rtems-version=6 \
+  ./waf configure --prefix=/usr/local/rtems/riscv --rtems-tools=/usr/local/rtems/riscv --rtems-bsps=riscv/rv32imafc --rtems-version=6 --buildset=buildset/default.ini \
   && ./waf install
 
 WORKDIR /usr/local/src/SOEM

@@ -23,7 +23,11 @@ RUN PATH=/usr/local/rtems/i386/bin:$PATH \
 
 WORKDIR /usr/local/src/rtems-libbsd
 RUN PATH=/usr/local/rtems/i386/bin:$PATH \
-  ./waf configure --prefix=/usr/local/rtems/i386 --rtems-tools=/usr/local/rtems/i386 --rtems-bsps=i386/pc686 --rtems-version=6 \
+  ./waf configure --prefix=/usr/local/rtems/i386 \
+                  --rtems-tools=/usr/local/rtems/i386 \
+                  --rtems-bsps=i386/pc686 \
+                  --rtems-version=6 \
+                  --buildset=buildset/default.ini \
   && ./waf install
 
 WORKDIR /usr/local/src/SOEM
