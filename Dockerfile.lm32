@@ -13,12 +13,12 @@ WORKDIR  /usr/local/src/rtems-source-builder/rtems
 RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/lm32 6/rtems-lm32 
 
 WORKDIR /usr/local/src/rtems
-
 RUN echo "[lm32/milkymist]\nRTEMS_POSIX_API=true" > config.ini
 RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
   ./waf configure --prefix=/usr/local/rtems/lm32 \
   && ./waf install
 
+WORKDIR /usr/local/src/rtems-libbsd
 RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
   && ./waf configure --prefix=/usr/local/rtems/lm32 --rtems-tools=/usr/local/rtems/lm32 --rtems-bsps=lm32/milkymist --rtems-version=6 --buildset=buildset/default.ini \
   && ./waf install
