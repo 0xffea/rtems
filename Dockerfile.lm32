@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 AS builder
+FROM ubuntu:21.04 AS builder
 
 RUN apt update \
   && apt install -y build-essential python-is-python3 g++ gdb unzip \
