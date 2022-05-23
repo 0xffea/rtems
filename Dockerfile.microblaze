@@ -1,0 +1,47 @@
+FROM ubuntu:22.04 AS builder
+
+RUN apt update \
+  && apt install -y build-essential python-is-python3 g++ gdb unzip \
+                    pax bison flex texinfo python3-dev libpython2-dev libncurses5-dev \
+                    zlib1g-dev git cmake
+
+WORKDIR /usr/local/src
+
+COPY . .
+
+WORKDIR  /usr/local/src/rtems-source-builder/rtems
+RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/microblaze 6/rtems-microblaze
+
+WORKDIR /usr/local/src/rtems
+
+RUN echo "[microblaze/microblaze_fpga]\nRTEMS_POSIX_API=True\nBUILD_TESTS=True\nRTEMS_DEBUG=True" > config.ini
+RUN PATH=/usr/local/rtems/microblaze/bin:$PATH \
+  ./waf configure --prefix=/usr/local/rtems/microblaze \
+  && ./waf bsp_defaults --rtems-bsps=microblaze/microblaze_fpga \
+  && ./waf install \
+  && cp /usr/local/src/rtems/waf /usr/local/bin
+
+WORKDIR /usr/local/src/rtems-libbsd
+RUN PATH=/usr/local/rtems/microblaze/bin:$PATH \
+  ./waf configure --prefix=/usr/local/rtems/microblaze \
+                  --rtems-tools=/usr/local/rtems/microblaze \
+                  --rtems-bsps=microblaze/microblaze_fpga \
+                  --rtems-version=6 \
+                  --buildset=buildset/default.ini \
+  && ./waf install
+
+WORKDIR /usr/local/src/SOEM
+RUN PATH=/usr/local/rtems/microblaze/bin:$PATH \
+  && mkdir build \
+  && cd build \
+  && cmake -DCMAKE_SYSTEM_NAME=rtems -DRTEMS_TOOLS_PATH=/usr/local/rtems/microblaze \
+           -DHOST=microblaze-rtems6 -DCMAKE_INSTALL_PREFIX=/usr/local/rtems/microblaze \
+           -DCMAKE_C_COMPILER=/usr/local/rtems/microblaze/bin/microblaze-rtems6-gcc .. \
+  && make VERBOSE=1 install
+
+FROM ubuntu:22.04
+
+RUN apt update \
+  && apt install -y python-is-python3
+
+COPY --from=builder /usr/local/rtems/microblaze /usr/local/rtems/microblaze
