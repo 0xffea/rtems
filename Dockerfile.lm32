@@ -1,8 +1,9 @@
-FROM ubuntu:21.04 AS builder
+FROM ubuntu:22.04 AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update \
+  && apt upgrade -y \
   && apt install -y build-essential python-is-python3 g++ gdb unzip \
                     pax bison flex texinfo python3-dev libpython2-dev libncurses5-dev \
                     zlib1g-dev git cmake
@@ -15,7 +16,7 @@ WORKDIR  /usr/local/src/rtems-source-builder/rtems
 RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/lm32 6/rtems-lm32 
 
 WORKDIR /usr/local/src/rtems
-RUN echo "[lm32/milkymist]\nRTEMS_POSIX_API=true" > config.ini
+RUN echo "[lm32/milkymist]\nRTEMS_POSIX_API=True\nRTEMS_DEBUG=False" > config.ini
 RUN PATH=/usr/local/rtems/lm32/bin:$PATH \
   ./waf configure --prefix=/usr/local/rtems/lm32 \
   && ./waf install

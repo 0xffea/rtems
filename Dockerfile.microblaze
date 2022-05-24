@@ -1,8 +1,11 @@
 FROM ubuntu:21.04 AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV NL_RTEMS_ARCH=microblaze
+ENV NL_RTEMS_BOARD=kcu105_qemu
 
 RUN apt update \
+  && apt upgrade -y \
   && apt install -y build-essential python-is-python3 g++ gdb unzip \
                     pax bison flex texinfo python3-dev libpython2-dev libncurses5-dev \
                     zlib1g-dev git cmake
@@ -16,10 +19,10 @@ RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/microblaze 6/rtem
 
 WORKDIR /usr/local/src/rtems
 
-RUN echo "[microblaze/microblaze_fpga]\nRTEMS_POSIX_API=True\nBUILD_TESTS=True\nRTEMS_DEBUG=True" > config.ini
+RUN echo "[microblaze/kcu105_qemu]\nRTEMS_POSIX_API=True\nBUILD_TESTS=False\nRTEMS_DEBUG=False" > config.ini
 RUN PATH=/usr/local/rtems/microblaze/bin:$PATH \
   ./waf configure --prefix=/usr/local/rtems/microblaze \
-  && ./waf bsp_defaults --rtems-bsps=microblaze/microblaze_fpga \
+  && ./waf bsp_defaults --rtems-bsps=microblaze/kcu105_qemu \
   && ./waf install \
   && cp /usr/local/src/rtems/waf /usr/local/bin
 
@@ -27,7 +30,7 @@ WORKDIR /usr/local/src/rtems-libbsd
 RUN PATH=/usr/local/rtems/microblaze/bin:$PATH \
   ./waf configure --prefix=/usr/local/rtems/microblaze \
                   --rtems-tools=/usr/local/rtems/microblaze \
-                  --rtems-bsps=microblaze/microblaze_fpga \
+                  --rtems-bsps=microblaze/kcu105_qemu \
                   --rtems-version=6 \
                   --buildset=buildset/default.ini \
   && ./waf install
