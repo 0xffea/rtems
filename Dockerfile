@@ -14,7 +14,7 @@ RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/i386 6/rtems-i386
 
 WORKDIR /usr/local/src/rtems
 
-RUN echo "[i386/pc686]\nRTEMS_POSIX_API=True\nBUILD_TESTS=True\nRTEMS_DEBUG=True\nRTEMS_PARAVIRT=True" > config.ini
+RUN echo "[i386/pc686]\nRTEMS_POSIX_API=True\nBUILD_TESTS=True\nRTEMS_DEBUG=True" > config.ini
 RUN PATH=/usr/local/rtems/i386/bin:$PATH \
   ./waf configure --prefix=/usr/local/rtems/i386 \
   && ./waf bsp_defaults --rtems-bsps=i386/pc686 \
