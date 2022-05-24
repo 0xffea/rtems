@@ -19,30 +19,16 @@ RUN ../source-builder/sb-set-builder --prefix=/usr/local/rtems/microblaze 6/rtem
 
 WORKDIR /usr/local/src/rtems
 
-RUN echo "[microblaze/kcu105_qemu]\nRTEMS_POSIX_API=True\nBUILD_TESTS=False\nRTEMS_DEBUG=False" > config.ini
+RUN echo "[microblaze/kcu105_qemu]\nRTEMS_POSIX_API=True\nBUILD_TESTS=False\nRTEMS_DEBUG=True" > config.ini
 RUN PATH=/usr/local/rtems/microblaze/bin:$PATH \
   ./waf configure --prefix=/usr/local/rtems/microblaze \
   && ./waf bsp_defaults --rtems-bsps=microblaze/kcu105_qemu \
   && ./waf install \
   && cp /usr/local/src/rtems/waf /usr/local/bin
 
-WORKDIR /usr/local/src/rtems-libbsd
-RUN PATH=/usr/local/rtems/microblaze/bin:$PATH \
-  ./waf configure --prefix=/usr/local/rtems/microblaze \
-                  --rtems-tools=/usr/local/rtems/microblaze \
-                  --rtems-bsps=microblaze/kcu105_qemu \
-                  --rtems-version=6 \
-                  --buildset=buildset/default.ini \
-  && ./waf install
-
-WORKDIR /usr/local/src/SOEM
-RUN PATH=/usr/local/rtems/microblaze/bin:$PATH \
-  && mkdir build \
-  && cd build \
-  && cmake -DCMAKE_SYSTEM_NAME=rtems -DRTEMS_TOOLS_PATH=/usr/local/rtems/microblaze \
-           -DHOST=microblaze-rtems6 -DCMAKE_INSTALL_PREFIX=/usr/local/rtems/microblaze \
-           -DCMAKE_C_COMPILER=/usr/local/rtems/microblaze/bin/microblaze-rtems6-gcc .. \
-  && make VERBOSE=1 install
+#
+# Seems rtems libbsd does not support microblaze architecture.
+#
 
 FROM ubuntu:22.04
 
